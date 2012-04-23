@@ -40,12 +40,11 @@ void main(int argc, char **argv) {
     list_file = fopen(*(argv+1),"r");
 
     if(list_file != NULL) {
-        fscanf(list_file, "%d", &length);
+        fread(&length, sizeof(int), 1, list_file);
 
         list = calloc(length,sizeof(int));
 
-        for(i=0; i<length; i++)
-            fscanf(list_file, "%d", (list+i));
+        fread(list, sizeof(int), length, list_file);
 
         quicksort(list,list+(length-1));
 
