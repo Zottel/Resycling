@@ -21,6 +21,6 @@ void main(int argc, char *argv[]) {
 	// Abfangen eines Überlaufes fehlt hier.
 	
 	for(zaehler = 0; zaehler < zahl2; zaehler++, zahl1++) {
-		printf("%-10d | %-10d\n", zahl1, zahl1*zahl1);
+		printf("%10d | %10d\n", zahl1, zahl1*zahl1);
 	}
 }
