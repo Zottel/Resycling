@@ -5,14 +5,14 @@
 int main() {
 	unsigned int zahl;
 	
-	char *ausgabe = (char *) calloc(5, sizeof(char));
-	
+    char ausgabe[5];
+
 	puts("Bitte Hexadezimalzahl eingeben: ");
 	
 	if(scanf("%x", &zahl)) {
 		// Schreibe von BTHEX zurückgegebene Zeichen in Ausgabestring
-		*(int *)ausgabe = bthex(zahl >> 8);
-		*(int *)(ausgabe + 2) = bthex(zahl & 0xFF);
+		*(int *)ausgabe = BTHEX(zahl >> 8);
+		*(int *)(ausgabe + 2) = BTHEX(zahl & 0xFF);
 		
 		// Nullterminator des Strings
 		ausgabe[4] = '\0';

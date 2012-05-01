@@ -8,14 +8,14 @@ int main() {
 	unsigned char *laeufer = NULL;
 	
 	// Double sind 8 bytes => 16 hex ascii chars + '\0' = 17
-	char *ausgabe = (char *) calloc(17, sizeof(char));
-	
+    char ausgabe[17];	
+
 	puts("Bitte Zahl eingeben: ");
 	
 	if(scanf("%lf", &zahl)) {
 		// Schreibe von BTHEX zurückgegebene Zeichen in Ausgabestring
 		for(i = 0; i < 8; i++, laeufer++) {
-			*(int *)(ausgabe + (2 * i)) = bthex(*laeufer);
+			*(int *)(ausgabe + (2 * i)) = BTHEX(*laeufer);
 		}
 		
 		// Nullterminator des Strings

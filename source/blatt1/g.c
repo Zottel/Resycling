@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "bthex.h"
+
 typedef unsigned int menge;
 
 menge maske(int nr) {
@@ -17,6 +19,7 @@ menge loeschen(menge m, int nr) {
 void main() {
 	menge m = 0;
 	int input = 0;
+    char ausgabe[5];
 
 	do{
 		if(!scanf("%d", &input)) {
@@ -31,7 +34,13 @@ void main() {
 		} else if(input!=0) {
 			fprintf(stderr,"Unerwartete Eingabe!\n");
 		}
-		//TODO: bthex benutzen
-		printf("Menge: %x\n", m);
+
+        *(int *)ausgabe = BTHEX(m >> 8);
+        *(int *)(ausgabe + 2) = BTHEX(m & 0xFF);
+        
+        ausgabe[4] = '\0';
+
+        puts(ausgabe);
+
 	}while(input);
 }

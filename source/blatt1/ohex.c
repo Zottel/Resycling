@@ -1,5 +1,5 @@
 
-int bthex(unsigned char a){
+int BTHEX(unsigned char a){
 	const char *digits = "0123456789ABCDEF";
 
 	int res;
