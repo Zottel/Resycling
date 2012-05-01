@@ -5,7 +5,7 @@
 int main() {
 	int i;
 	double zahl;
-	unsigned char *laeufer = NULL;
+	unsigned char *laeufer = (unsigned char*) &zahl;
 	
 	// Double sind 8 bytes => 16 hex ascii chars + '\0' = 17
     char ausgabe[17];	

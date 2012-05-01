@@ -12,8 +12,8 @@ f.exe: f.obj bthex.obj
 	$(CC) -ms -ef.exe f.obj bthex.obj
 
 g.exe: g.obj bthex.obj
-	@echo "Sonderregel: Aufgabe f wird gelinkt"
-	$(CC) -ms -ef.exe f.obj bthex.obj
+	@echo "Sonderregel: Aufgabe g wird gelinkt"
+	$(CC) -ms -eg.exe g.obj bthex.obj
 
 h.exe: f.obj ohex.obj
 	@echo "Sonderregel: Aufgabe h wird gelinkt"
