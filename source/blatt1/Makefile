@@ -4,7 +4,14 @@ MODEL = -ms
 CFLAGS = $(MODEL)
 
 # Special Purpose
+bthex.obj:
+	@echo "BTHEX is provided externally"
+
 f.exe: f.obj bthex.obj
+	@echo "Sonderregel: Aufgabe f wird gelinkt"
+	$(CC) -ms -ef.exe f.obj bthex.obj
+
+g.exe: g.obj bthex.obj
 	@echo "Sonderregel: Aufgabe f wird gelinkt"
 	$(CC) -ms -ef.exe f.obj bthex.obj
 
