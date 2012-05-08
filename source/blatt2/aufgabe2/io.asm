@@ -13,6 +13,7 @@ readNum:
 	
 	; Initialisiere Schleifenregister
 	mov si, .read_buffer
+    add si, 0x02
 	xor ax, ax
 	xor dx, dx
 	mov bx, 0x000A
@@ -27,7 +28,7 @@ readNum:
 		inc si
 		sub dl, '0'
 		cmp dl, 0x09
-		jle .parseLoop ; jump if less or equal
+		jbe .parseLoop ; jump if less or equal
 	
 	.finished:
 	; Anzahl gelesener Ziffern in cx
@@ -39,7 +40,7 @@ readNum:
 	pop bx
 	pop dx
 ret
-.read_buffer: times 7 db 0
+.read_buffer: times 8 db 0
 
 writeNum:
 	; Ziffern werden "rückwärts" geschrieben
@@ -47,8 +48,8 @@ writeNum:
 	
 	; in den .write_buffer
 	mov di, .write_buffer
-    add di, 0x05
-
+	dec .write_buffer
+	
 	.writeLoop:
 	mov bx, 0x000A
 	xor dx, dx
