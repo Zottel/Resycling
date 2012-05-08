@@ -47,8 +47,8 @@ writeNum:
 	
 	; in den .write_buffer
 	mov di, .write_buffer
-	dec .write_buffer
-	
+    add di, 0x05
+
 	.writeLoop:
 	mov bx, 0x000A
 	xor dx, dx
@@ -61,10 +61,10 @@ writeNum:
 	jnz .writeLoop
 	
 	; si auf das erste Zeichen setzen
-	inc si
+	inc di
 	
 	; Puffer ausgeben
-	mov dx, si
+	mov dx, di
 	mov ah, 0x09
 	int 0x21
 	
