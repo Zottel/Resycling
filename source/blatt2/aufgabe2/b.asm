@@ -3,9 +3,10 @@ bits 16
 org 0x100
 
 main:
-    
+   
+    ;Von com datei allokierten Speicher verkleinern
     mov ah, 0x4a
-    mov bx, 0x10
+    mov bx, 0xff
     int 0x21
     
     .eingabe_schleife:
