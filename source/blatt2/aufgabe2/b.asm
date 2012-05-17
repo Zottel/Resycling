@@ -1,14 +1,11 @@
-bits 16
+[BITS 16]
 
-org 0x100
+global _main
 
-main:
-   
-    ;Von com datei allokierten Speicher verkleinern
-    mov ah, 0x4a
-    mov bx, 0xff
-    int 0x21
-    
+segment _TEXT CLASS=CODE
+
+_main:
+  
     .eingabe_schleife:
         ;Lese Zeichen, beende einlsen bei leerer Eingabe
         call readChars
@@ -59,7 +56,8 @@ main:
         jmp .ausgabe_schleife
 
     .a_ende:
-        jmp 0
+        mov ah, 0x4c
+        int 0x21
 
 readChars:
     ;String mit 2 Zeichen einlesen und in ax schreiben
@@ -101,6 +99,8 @@ endl:
     int 0x21
 
     ret
+
+segment _DATA CLASS=DATA
 
 chars: times 5 db 0
 prev_ptr: dw 0

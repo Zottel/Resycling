@@ -1,8 +1,10 @@
-bits 16
+[BITS 16]
 
-org 0x100
+global _main
 
-main:
+segment _TEXT CLASS=CODE
+
+_main:
    
     mov di, [prev_ptr]
     
@@ -29,7 +31,8 @@ main:
         jmp .ausgabe_schleife
 
     .a_ende:
-        jmp 0
+        mov ah, 0x4c
+        int 0x21
 
 list_push:
 	mov di, [next_ptr]
@@ -121,6 +124,8 @@ endl:
     int 0x10
 
     ret
+
+segment _DATA CLASS=DATA
 
 prev_ptr dw 0
 next_ptr dw code_end

@@ -3,7 +3,23 @@ CC = $(CBASE)\BIN\TCC.EXE
 ASM = C:\NASM\NASM.EXE
 CFLAGS = 
 
-a.com:
-	$(ASM) -o a.com a.asm
+all: a.exe b.exe c.exe d.exe e.exe
 
-all: a.com
+a.exe: a.asm
+    $(ASM) -o a.com a.asm
+
+b.exe: b.asm
+	$(ASM) -f obj -o b.obj b.asm
+    $(CC) -ml -eb.exe b.obj
+
+c.exe: c.asm
+	$(ASM) -f obj -o c.obj c.asm
+    $(CC) -ml -ec.exe c.obj
+
+d.exe: d.asm
+	$(ASM) -f obj -o d.obj d.asm
+    $(CC) -ml -ed.exe d.obj
+
+e.exe: e.asm
+	$(ASM) -f obj -o e.obj e.asm
+    $(CC) -ml -ee.exe e.obj
