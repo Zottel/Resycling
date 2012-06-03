@@ -1,0 +1,20 @@
+CBASE = C:\TC
+CC = $(CBASE)\BIN\TCC.EXE
+ASM = C:\NASM\NASM.EXE
+CFLAGS = 
+
+
+
+all: c_ms c_mc c_ml
+
+c_ms: c_add.asm c_loader.c
+    $(ASM) -f obj -o add.obj c_add.asm 
+    $(CC) -ec_ms.exe -ms add_ms.obj c_loader.c
+
+c_mc: c_add_mc.asm c_loader.c
+    $(ASM) -f obj -o add.obj c_add_mc.asm 
+    $(CC) -ec_mc.exe -mc add_mc.obj c_loader.c
+
+c_ml: c_add_ml.asm c_loader.c
+    $(ASM) -f obj -o add.obj c_add_ml.asm 
+    $(CC) -ec_ml.exe -ml add_ml.obj c_loader.c
