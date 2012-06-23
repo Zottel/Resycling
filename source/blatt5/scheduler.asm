@@ -5,6 +5,34 @@ SEGMENT _TEXT PUBLIC CLASS=CODE
 ;-----------------------------;
 
 
+main:
+	;WASCO karte initialisieren
+	;--------------------------
+	mov al, 0x01
+	out 0xe021, al ;OPTOIN interrup aktivieren
+	;Interrupts zuruesetzen
+	in 0xe020, al
+	in 0xe021, al
+	in 0xe022, al
+	in 0xe023, al
+
+	;ISR aufsetzten
+	;-------------
+	push es
+	xor ax, ax
+	mov es ,ax
+	;Alte ISR sichern
+	mov ax, WORD [es:52]
+	mov WORD [orig_off] , ax
+	mov ax, WORD [es:54]
+	mov WORD [orig_seg], ax
+	;Eigene ISR setzen
+	mov WORD [es:52], scheduler
+	mov WORD [es:54], seg scheduler
+	pop es
+
+	//TODO: Beenden?
+
 scheduler:
 	; DS wird gebraucht für globale variablen
 	push ds
