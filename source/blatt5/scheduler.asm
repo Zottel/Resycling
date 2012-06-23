@@ -1,5 +1,7 @@
 bits 16
 
+extern prozess1, prozess2, prozess3, prozess4
+
 ;-----------------------------;
 SEGMENT _TEXT PUBLIC CLASS=CODE
 ;-----------------------------;
@@ -112,21 +114,68 @@ state0:
 	st_dx equ ($ - state0)
 	dw 0 ; DX
 	st_sp equ ($ - state0)
-	dw 0 ; SP
+	dw stack0 ; SP
 	st_bp equ ($ - state0)
 	dw 0 ; BP
 	st_es equ ($ - state0)
 	dw 0 ; ES
 	st_ss equ ($ - state0)
-	dw 0 ; SS
+	dw seg initial_stacks ; SS	
 	state_size equ ($ - state0)
-	
+
 state1:
+	dw 0 ; FLAGS
+	dw 0 ; DI
 	dw 0 ; SI
-	
+	dw 0 ; AX
+	dw 0 ; BX
+	dw 0 ; CX
+	dw 0 ; DX
+	dw stack1 ; SP
+	dw 0 ; BP
+	dw 0 ; ES
+	dw seg initial_stacks ; SS	
+
 state2:
+	dw 0 ; FLAGS
+	dw 0 ; DI
 	dw 0 ; SI
+	dw 0 ; AX
+	dw 0 ; BX
+	dw 0 ; CX
+	dw 0 ; DX
+	dw stack2 ; SP
+	dw 0 ; BP
+	dw 0 ; ES
+	dw seg initial_stacks ; SS	
 
 state3:
+	dw 0 ; FLAGS
+	dw 0 ; DI
 	dw 0 ; SI
-	
+	dw 0 ; AX
+	dw 0 ; BX
+	dw 0 ; CX
+	dw 0 ; DX
+	dw stack3 ; SP
+	dw 0 ; BP
+	dw 0 ; ES
+	dw seg initial_stacks ; SS	
+
+initial_stacks:
+	        dw seg prozess1
+	        dw     prozess1
+	        dw 0 ; DS Anfangswert
+	stack0: dw 0 ; AX Anfangswert
+	        dw seg prozess2
+	        dw     prozess2
+	        dw 0 ; DS Anfangswert
+	stack1: dw 0 ; AX Anfangswert
+	        dw seg prozess3
+	        dw     prozess3
+	        dw 0 ; DS Anfangswert
+	stack2: dw 0 ; AX Anfangswert
+	        dw seg prozess4
+	        dw     prozess4
+	        dw 0 ; DS Anfangswert
+	stack3: dw 0 ; AX Anfangswert
