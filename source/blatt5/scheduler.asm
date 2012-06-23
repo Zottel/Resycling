@@ -88,7 +88,29 @@ scheduler:
 	mul bx         ; Resultat in DX:AX - DX wird verworfen
 	add di, ax
 	
+	; Zustand des Threads wiederherstellen
+	mov si, [di + st_si]
+	mov bx, [di + st_bx]
+	mov cx, [di + st_cx]
+	mov dx, [di + st_dx]
+	mov sp, [di + st_sp]
+	mov bp, [di + st_bp]
 	
+	mov [di + st_es], ax
+	mov es, ax
+	
+	mov [di + st_ss], ax
+	mov ss, ax
+	
+	mov ax, [di + st_fl]
+	push ax
+	popf
+	
+	mov ax, [di + st_ax]
+	mov di, [di + st_di]
+	pop ds
+	iret
+
 error:
 	jmp $
 
@@ -168,17 +190,17 @@ state3:
 initial_stacks:
 	        dw seg prozess1
 	        dw     prozess1
-	        dw 0 ; DS Anfangswert
-	stack0: dw 0 ; AX Anfangswert
+	stack0: dw 0 ; DS Anfangswert
+	        dw 0
 	        dw seg prozess2
 	        dw     prozess2
-	        dw 0 ; DS Anfangswert
-	stack1: dw 0 ; AX Anfangswert
+	stack1: dw 0 ; DS Anfangswert
+	        dw 0
 	        dw seg prozess3
 	        dw     prozess3
-	        dw 0 ; DS Anfangswert
-	stack2: dw 0 ; AX Anfangswert
+	stack2: dw 0 ; DS Anfangswert
+	        dw 0
 	        dw seg prozess4
 	        dw     prozess4
-	        dw 0 ; DS Anfangswert
-	stack3: dw 0 ; AX Anfangswert
+	stack3: dw 0 ; DS Anfangswert
+	        dw 0
