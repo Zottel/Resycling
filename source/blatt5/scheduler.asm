@@ -13,10 +13,14 @@ main:
 	mov al, 0x01
 	out 0xe021, al ;OPTOIN interrup aktivieren
 	;Interrupts zuruesetzen
-	in 0xe020, al
-	in 0xe021, al
-	in 0xe022, al
-	in 0xe023, al
+	in al, 0xe020
+	in al, 0xe021
+	in al, 0xe022
+	in al, 0xe023
+	in al, 0xe024
+	in al, 0xe025
+	in al, 0xe026
+	in al, 0xe027
 
 	;ISR aufsetzten
 	;-------------
@@ -33,7 +37,8 @@ main:
 	mov WORD [es:54], seg scheduler
 	pop es
 
-	//TODO: Beenden?
+	xor ax, ax
+	jmp first_jump
 
 scheduler:
 	; DS wird gebraucht für globale variablen
@@ -102,19 +107,62 @@ scheduler:
 	; Prozesszustand fertig gesichert
 	; Aktiver Prozess in AX
 	
-	; TODO: Here be prozessauswahl
-	inc ax
-	cmp ax, 0x03
-	jle .nowrap
-		mov ax, 0x00
-	.nowrap:
+	; OPTOIN Interrupt?
+	in bl, 0xe44c
+	cmp bl, 0x04 
+	jne first_jump
+	; Welcher Schalter?
+	in bl, 0xe00e
 	
+	cmp bl, 0x01
+	jne .not_0
+	mox ax, 0
+	jmp .switch_end
+
+	.not_0:
+	cmp bl, 0x02
+	jne .not_1
+	mox ax, 1
+	jmp .switch_end
+
+	.not_1:
+	cmp bl, 0x04
+	jne .not_2
+	mox ax, 2
+	jmp .switch_end
+
+	.not_2:
+	cmp bl, 0x08
+	jne .not_3
+	mox ax, 3
+	jmp .switch_end
+	
+	.not_3:
+	jmp first_jump
+
+	.switch_end:
+
+	;Reset OPTOIN Interrupt
+	in bl, 0xe020
+	in bl, 0xe021
+	in bl, 0xe022
+	in bl, 0xe023
+	in bl, 0xe024
+	in bl, 0xe025
+	in bl, 0xe026
+	in bl, 0xe027
+	
+	;Reset PIC
+	mov bl, 0x20
+	out 0x20, bl
+
 	; Nummer des nächsten Prozesses wird hier in AX erwartet.
-	mov [activeThread], ax
-	mov di, state0
-	mov bx, state_size
-	mul bx         ; Resultat in DX:AX - DX wird verworfen
-	add di, ax
+	first_jump:
+		mov [activeThread], ax
+		mov di, state0
+		mov bx, state_size
+		mul bx         ; Resultat in DX:AX - DX wird verworfen
+		add di, ax
 	
 	
 error:
@@ -123,6 +171,9 @@ error:
 ;-----------------------------;
 SEGMENT _DATA PUBLIC CLASS=DATA
 ;-----------------------------;
+
+orig_seg: dw 0
+orig_off: dw 0
 
 activeThread: dw 0
 
