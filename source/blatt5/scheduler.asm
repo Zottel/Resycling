@@ -11,16 +11,25 @@ main:
 	;WASCO karte initialisieren
 	;--------------------------
 	mov al, 0x01
-	out 0xe021, al ;OPTOIN interrup aktivieren
+	mov dx, 0xe021
+	out dx , al ;OPTOIN interrup aktivieren
+	dec dx
 	;Interrupts zuruesetzen
-	in al, 0xe020
-	in al, 0xe021
-	in al, 0xe022
-	in al, 0xe023
-	in al, 0xe024
-	in al, 0xe025
-	in al, 0xe026
-	in al, 0xe027
+	in al, dx
+	inc dx
+	in al, dx
+	inc dx
+	in al, dx
+	inc dx
+	in al, dx
+	inc dx
+	in al, dx
+	inc dx
+	in al, dx
+	inc dx
+	in al, dx
+	inc dx
+	in al, dx
 
 	;ISR aufsetzten
 	;-------------
@@ -107,54 +116,63 @@ scheduler:
 	; Prozesszustand fertig gesichert
 	; Aktiver Prozess in AX
 	
+	mov bx, ax
 	; OPTOIN Interrupt?
-	in bl, 0xe44c
-	cmp bl, 0x04 
-	jne first_jump
+	mov dx, 0xe44c
+	in al, dx
+	cmp al, 0x04 
+	jne .switch_end
 	; Welcher Schalter?
-	in bl, 0xe00e
+	mov dx, 0xe00e
+	in al, dx
 	
-	cmp bl, 0x01
+	cmp al, 0x01
 	jne .not_0
-	mox ax, 0
+	mov bx, 0
 	jmp .switch_end
 
 	.not_0:
-	cmp bl, 0x02
+	cmp al, 0x02
 	jne .not_1
-	mox ax, 1
+	mov bx, 1
 	jmp .switch_end
 
 	.not_1:
-	cmp bl, 0x04
+	cmp al, 0x04
 	jne .not_2
-	mox ax, 2
+	mov bx, 2
 	jmp .switch_end
 
 	.not_2:
-	cmp bl, 0x08
-	jne .not_3
-	mox ax, 3
-	jmp .switch_end
-	
-	.not_3:
-	jmp first_jump
+	cmp al, 0x08
+	jne .switch_end
+	mov bx, 3
 
 	.switch_end:
 
 	;Reset OPTOIN Interrupt
-	in bl, 0xe020
-	in bl, 0xe021
-	in bl, 0xe022
-	in bl, 0xe023
-	in bl, 0xe024
-	in bl, 0xe025
-	in bl, 0xe026
-	in bl, 0xe027
+	mov dx, 0xe020
+	in al, dx
+	inc dx
+	in al, dx
+	inc dx
+	in al, dx
+	inc dx
+	in al, dx
+	inc dx
+	in al, dx
+	inc dx
+	in al, dx
+	inc dx
+	in al, dx
+	inc dx
+	in al, dx
 	
 	;Reset PIC
-	mov bl, 0x20
-	out 0x20, bl
+	mov al, 0x20
+	out 0x20, al
+
+	mov ax, bx
 
 	; Nummer des nächsten Prozesses wird hier in AX erwartet.
 	first_jump:
