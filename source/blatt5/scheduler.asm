@@ -71,21 +71,24 @@ scheduler:
 		mov ax, ss
 		mov [di + st_ss], ax
 	
-	; Here be prozessauswahl
-	; Prozesszustand fertig gesichert, nächsten Prozess auswählen
-	mov ax, [activeThread]
+	; Prozesszustand fertig gesichert
+	; Aktiver Prozess in AX
+	
+	; TODO: Here be prozessauswahl
 	inc ax
 	cmp ax, 0x03
 	jle .nowrap
 		mov ax, 0x00
 	.nowrap:
 	
+	; Nummer des nächsten Prozesses wird hier in AX erwartet.
 	mov [activeThread], ax
 	mov di, state0
 	mov bx, state_size
 	mul bx         ; Resultat in DX:AX - DX wird verworfen
 	add di, ax
-
+	
+	
 error:
 	jmp $
 
