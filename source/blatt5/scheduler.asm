@@ -5,13 +5,13 @@ SEGMENT _TEXT PUBLIC CLASS=CODE
 ;-----------------------------;
 
 
-sheduler:
+scheduler:
 	; DS wird gebraucht für globale variablen
 	push ds
 	; AX wird zum Zwischenspeichern von Werten benötigt
 	push ax
 	
-	; Datensegment der globalen Variablen und Structs des Shedulers
+	; Datensegment der globalen Variablen und Structs des Schedulers
 	mov ax, seg activeThread
 	mov ds, ax
 	
