@@ -69,16 +69,20 @@ sheduler:
 		mov ax, ss
 		mov [di + st_ss], ax
 	
+	; Here be prozessauswahl
 	; Prozesszustand fertig gesichert, nächsten Prozess auswählen
-	mov al, [activeThread]
-	inc al
-	cmp al, 0x03
+	mov ax, [activeThread]
+	inc ax
+	cmp ax, 0x03
 	jle .nowrap
-		mov al, 0x00
+		mov ax, 0x00
 	.nowrap:
 	
-	mov [activeThread], al
-	mov di, [state0 + state_size * al]
+	mov [activeThread], ax
+	mov di, state0
+	mov bx, state_size
+	mul bx         ; Resultat in DX:AX - DX wird verworfen
+	add di, ax
 
 error:
 	jmp $
@@ -87,7 +91,7 @@ error:
 SEGMENT _DATA PUBLIC CLASS=DATA
 ;-----------------------------;
 
-activeThread: db 0
+activeThread: dw 0
 
 tmp_flags: dw 0
 tmp_ax: dw 0
